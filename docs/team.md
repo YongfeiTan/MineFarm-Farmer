@@ -1,16 +1,16 @@
 ---
 layout: default
-title:  Team Group 21
+title:  MineFarm Farmer
 ---
 
 # {{ page.title }}
 
 
-### USER 1
+### Yilun Song
 ***UCI Net ID***: yiluns1  
 
-### USER 2
+### Jiayi Zhang
 ***UCI Net ID***: zjiayi  
 
-### USER 3
+### Yongfei Tan
 ***UCI Net ID***: yongfeit  
