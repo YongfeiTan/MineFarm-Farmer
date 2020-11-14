@@ -34,4 +34,4 @@ In the next four weeks, we will upgrade the map by adding some zombies which can
 ## Resources Used
 1. we use code from Assigment2
 2. XML website which designed by Microsoft. https://microsoft.github.io/malmo/0.30.0/Schemas/Mission.html
-3. Tutorial files help us understand tags in XML and how to achieve some specific goals. It includes in Malmo project
+3. Tutorial files help us understanding tags in XML and how to achieve some specific goals. It includes in Malmo project
