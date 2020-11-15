@@ -4,7 +4,8 @@ title:  Status
 ---
 
 #### Video
-<iframe width="560" height="315" src="https://drive.google.com/file/d/1vrUaV2EGtWeD2R_JFOYxdc3E_1qZ_ah-/view?usp=sharing" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[Video Link](https://drive.google.com/file/d/1vrUaV2EGtWeD2R_JFOYxdc3E_1qZ_ah-/view?usp=sharing)
+<iframe width="560" height="315" src="https://youtu.be/Ob-9S6akK1U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Project Summary
 In this project, we want to employ the AI agent to kill various animals on the map to attain as much profit as possible with the help of the implement of Q-Learning given a limit time. The agent may meet different types of animals and it needs to keep learning and improve its performance on identifying which animal is worth the most rewards and could bring the most potential value to the agent within the limit time.
@@ -35,7 +36,7 @@ for entity in grid.values():
 ```
 
 - Action Space  
-The action space is the exactly the same as the project of assignment 2 which includes move forward/left/right and destroy the block which is for killing the animal on the block. We implement the epsilon-greedy policy to select the following actions. In the next step, we may add `pitch` as a new action since some animals are too small to attack. 
+The action space is the exactly the same as the project of assignment 2 which includes move forward/left/right and destroy the block which is for killing the animal on the block. We implement the epsilon-greedy policy to select the following actions. In the next step, we may add `pitch` as a new action since some animals are too small to attack.
 ```
 # may add 'pitch' in the future
 ACTION_DICT = {
@@ -49,7 +50,7 @@ ACTION_DICT = {
 - Terminal states  
 Within a specific time limit. Currently, the limit is 60 seconds.
 
-- We also implement the reward mechanism which gives a feedback to the agent when it each time kills the animal. The agent can learn from the score and gain the ability to identify more “valuable” animal to kill.  
+- We also implement the reward mechanism which gives a feedback to the agent when it each time kills the animal. The agent can learn from the score and gain the ability to identify more “valuable” animal to kill.
 ```
 <RewardForDamagingEntity>
     <Mob type='Sheep' reward='+1'/>
