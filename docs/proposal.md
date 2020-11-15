@@ -32,6 +32,6 @@ We will use Q-learning to optimize the agent’s actions and machine learning al
 ## Appointment with the Instructor
 Time: 11:30am, Thursday, Oct 22
 
-## Group Meeting
+## Group Meeting Time
 3:00pm, TueThu
 
