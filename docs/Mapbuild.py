@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import division
+
 # ------------------------------------------------------------------------------------------------
 # Copyright (c) 2016 Microsoft Corporation
 # 
@@ -33,7 +34,7 @@ import json
 import random
 from tqdm import tqdm
 from collections import deque
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 import numpy as np
 from numpy.random import randint
 
@@ -44,20 +45,19 @@ from torch.utils.data import Dataset, DataLoader
 from builtins import range
 from past.utils import old_div
 
-
-
-SIZE = 5
+SIZE = 7
 OBS_SIZE = 15
-zombie_num = 3
-animal_num = 10
+zombie_num = 2
+animal_num = 5
 # Maze_type = 'stained_glass'
 Farm_type = 'grass'
-Animal_list = ['PigZombie']
+zombie_list = ['Zombie']
+Animal_list = ['Pig', 'Cow', 'Sheep']
 ACTION_DICT = {
     0: 'move 1',  # Move one block forward
     1: 'turn 1',  # Turn 90 degrees to the right
     2: 'turn -1',  # Turn 90 degrees to the left
-    3: 'attack 1', # Destroy block
+    3: 'attack 1',  # Destroy block
 }
 zombie = f"<DrawEntity x='8' y='2' z='8' type='Zombie'/>"
 
@@ -65,6 +65,7 @@ if sys.version_info[0] == 2:
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 else:
     import functools
+
     print = functools.partial(print, flush=True)
 
 
@@ -73,22 +74,20 @@ def EnitySpawn(list_entity, num):
     result = ''
     length = len(list_entity)
     for i in range(num):
-        x, z = np.random.randint(-SIZE, SIZE, size=2)
+        x, z = np.random.randint(-SIZE+1, SIZE-1, size=2)
         index = np.random.randint(0, length)
         while (x, z) in entity_list:
-            x, z = np.random.randint(-SIZE, SIZE, size=2)
+            x, z = np.random.randint(-SIZE+1, SIZE-1, size=2)
         result += f"<DrawEntity x='{x}' y='2' z='{z}' type='{list_entity[index]}'/>"
-        entity_list.append((x,z))
+        entity_list.append((x, z))
     return result
 
 
-
-
-#<AgentQuitFromTimeUp timeLimitMs='1000'/>
-#grass is relative position in girdobservation
+# <AgentQuitFromTimeUp timeLimitMs='1000'/>
+# grass is relative position in girdobservation
 def XMLMapGenerator():
-    bounder = SIZE+1
-    bounderneg = -SIZE-1
+    bounder = SIZE + 1
+    bounderneg = -SIZE - 1
     return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
             <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -109,32 +108,36 @@ def XMLMapGenerator():
                         <DrawingDecorator>''' + \
            "<DrawCuboid x1='{}' x2='{}' y1='2' y2='5' z1='{}' z2='{}' type='air'/>".format(-SIZE, SIZE, -SIZE, SIZE) + \
            "<DrawCuboid x1='{}' x2='{}' y1='1' y2='1' z1='{}' z2='{}' type='grass'/>".format(-SIZE, SIZE, -SIZE, SIZE) + \
-           f"<DrawCuboid x1='{bounder}' x2='{bounder}' y1='0' y2='5' z1='{bounderneg}' z2='{bounder}' type='stone'/>" + \
-           f"<DrawCuboid x1='{bounderneg}' x2='{bounderneg}' y1='0' y2='5' z1='{bounderneg}' z2='{bounder}' type='stone'/>" + \
-           f"<DrawCuboid x1='{bounderneg}' x2='{SIZE}' y1='0' y2='5' z1='{bounderneg}' z2='{bounderneg}' type='stone'/>" + \
-           f"<DrawCuboid x1='{bounderneg}' x2='{SIZE}' y1='0' y2='5' z1='{bounder}' z2='{bounder}' type='stone'/>" + \
-           EnitySpawn(Animal_list,animal_num) +\
+           f"<DrawCuboid x1='{bounder}' x2='{bounder}' y1='0' y2='5' z1='{bounderneg}' z2='{bounder}' type='sea_lantern'/>" + \
+           f"<DrawCuboid x1='{bounderneg}' x2='{bounderneg}' y1='0' y2='5' z1='{bounderneg}' z2='{bounder}' type='sea_lantern'/>" + \
+           f"<DrawCuboid x1='{bounderneg}' x2='{SIZE}' y1='0' y2='5' z1='{bounderneg}' z2='{bounderneg}' type='sea_lantern'/>" + \
+           f"<DrawCuboid x1='{bounderneg}' x2='{SIZE}' y1='0' y2='5' z1='{bounder}' z2='{bounder}' type='sea_lantern'/>" + \
+           EnitySpawn(zombie_list, zombie_num) + \
+           EnitySpawn(Animal_list, animal_num) + \
            '''</DrawingDecorator>
                         <ServerQuitWhenAnyAgentFinishes/>
+                        <ServerQuitFromTimeUp timeLimitMs="50000" description="limit"/>
                     </ServerHandlers>
                 </ServerSection>
 
                 <AgentSection mode="Survival">
                     <Name>CS175MineFarm Farmer</Name>
                     <AgentStart>
-                        <Placement x="0.5" y="2" z="0.5" yaw="0"/>
+                        <Placement x="0.5" y="2" z="0.5" yaw="0" pitch="45"/>
                         <Inventory>
                             <InventoryItem slot="0" type="diamond_sword"/>
                         </Inventory>
                     </AgentStart>
                     <AgentHandlers>
-                        <DiscreteMovementCommands/>
+                        <ContinuousMovementCommands/>
+                        <MissionQuitCommands quitDescription="all_kill"/>
                         <RewardForDamagingEntity>
-                            <Mob type='Sheep' reward='+100'/>
+                            <Mob type='Sheep' reward='-100'/>
+                            <Mob type='Zombie' reward='+50'/>
                         </RewardForDamagingEntity>
-                        <RewardForMissionEnd rewardForDeath="-1000.0">
-                            <Reward description="killed_all" reward="0.0"/>
-                            <Reward description="times_up" reward="-100.0"/>
+                        <RewardForMissionEnd rewardForDeath="-500.0">
+                            <Reward description="all_kill" reward="0.0"/>
+                            <Reward description="limit" reward="-100.0"/>
                         </RewardForMissionEnd>
 
                         <ObservationFromFullStats/>
@@ -145,14 +148,13 @@ def XMLMapGenerator():
 
                         <ObservationFromGrid>
                             <Grid name="floorAll">
-                                 <min x="-''' + str(int(OBS_SIZE)/2) + '''" y="0" z="-''' + str(int(OBS_SIZE)/2) + '''"/>
-                                <max x="''' + str(int(OBS_SIZE)/2) + '''" y="0" z="''' + str(int(OBS_SIZE)/2) + '''"/>
+                                 <min x="-''' + str(int(OBS_SIZE) / 2) + '''" y="0" z="-''' + str(int(OBS_SIZE) / 2) + '''"/>
+                                <max x="''' + str(int(OBS_SIZE) / 2) + '''" y="0" z="''' + str(int(OBS_SIZE) / 2) + '''"/>
                             </Grid>
                         </ObservationFromGrid>
                     </AgentHandlers>
                 </AgentSection>
             </Mission>'''
-
 
 # missionXML = XMLMapGenerator()
 
@@ -206,8 +208,6 @@ def XMLMapGenerator():
 
 # print()
 # print("Mission ended")
-
-
 
 
 # Mission has ended.
