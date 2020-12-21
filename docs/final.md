@@ -60,7 +60,8 @@ Within a specific time limit. Currently, the limit is 50 seconds. If agent kills
 ### Algorithm
 We used DQL and PPO methods to help improve the performance.
 
-1. Deep Q Learning (DQN)
+#### Deep Q Learning (DQN)
+<img width="600" alt="DQN" src="https://user-images.githubusercontent.com/24601423/102749955-c8615f00-4319-11eb-80ea-aced6f62fc9b.png">
 
   - Store the past exploring experience of the agent 
   
@@ -80,8 +81,9 @@ We used DQL and PPO methods to help improve the performance.
   - Disadvantage: It will get higher overfit because it keeps its strategy after many iterations. When we train the agent, agent will continuously alive at most 3 times. After that, it will be killed with poor behavior. The agent's strategy doesn't change when the state has been changed. It shows agent usually find local maximum but not global maximum. 
 
 
-2. Proximal Policy Optimization (PPO)  
-  We tried both discrete action and continuous action list. We do train agent with this algorithm, but it has bug on our code. Agent cannot get reward from XML map. Its behavior doesn't as good as we think because of this problem. We cannot finish the training even we fix this problem. We make this comparison according to articles which introduce this two method. And Since PPO is a more complex and suitsble method, agent should get better result with this algorithm. 
+#### Proximal Policy Optimization (PPO)  
+<img width="600" alt="PPO" src="https://user-images.githubusercontent.com/24601423/102749803-80423c80-4319-11eb-802b-7d8f9cd9b517.png">
+  We tried both discrete action and continuous action list. We do train agent with this algorithm, but it has bug on our code. Agent cannot get reward from XML map. Its behavior doesn't as good as we think because of this problem. We cannot finish the training even we fix this problem. We make this comparison according to articles which introduce this two method. And Since PPO is a more complex and suitable method, agent should get better result with this algorithm. 
 
   $$ L(\theta)=\hat E_t[\min(r_t(\theta)\hat A_t, clip(r_t(\theta),1-\epsilon, 1+\epsilon)\hat A_t)] $$
   - Advantage: PPO should eventually get better behavior than DQN since DQN will get higher overfit.Since PPO will have longer time to explore new actions, it is possible that agent will find a global maximum.
@@ -100,7 +102,7 @@ The corner issue really limits the agent's behavior. It will be a good direction
 
 - DQN without wall penalty:  
 
-<img width="500" alt="DQN" src="https://user-images.githubusercontent.com/24601423/102706504-5d475800-4247-11eb-9a6b-cbcbf7b2ef91.png">
+<img width="500" alt="DQN_without_wall_penalty" src="https://user-images.githubusercontent.com/24601423/102706504-5d475800-4247-11eb-9a6b-cbcbf7b2ef91.png">
 
 - DQN with wall penalty:  
 
@@ -109,11 +111,11 @@ The corner issue really limits the agent's behavior. It will be a good direction
 The following plot is the average reward for random choices. All the decisions/actions the agent makes are random. There is no increase of the reward, which is much worse than the one using DQN.  
 - Ramdom choice:  
 
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/24601423/102748012-3c9a0380-4316-11eb-8d73-a6a77e7f772e.png">
+<img width="500" alt="random_choice" src="https://user-images.githubusercontent.com/24601423/102749734-60ab1400-4319-11eb-8b78-7af9da6b3972.png">
 
 - Best Result Record:  
 
-<img width="900" alt="image" src="https://user-images.githubusercontent.com/24601423/102742856-d78ce080-430a-11eb-8ac1-8845c4116aeb.png">
+<img width="900" alt="record" src="https://user-images.githubusercontent.com/24601423/102742856-d78ce080-430a-11eb-8ac1-8845c4116aeb.png">
 
 
 ### Qualitative
