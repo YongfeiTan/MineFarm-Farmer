@@ -4,7 +4,7 @@ title:  Status
 ---
 
 ## Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DqTQjLdnMu4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="630" height="345" src="https://www.youtube.com/embed/DqTQjLdnMu4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Project Summary
 In this project, the agent will learn to identify zombies and animals and then kill the zombies and protect animals (avoid killing animals). We add penalty coefficient to penalize the agent if it kills animals by mistake. For attacking the zombie, the agent will move and locate the enemy’s location. If the zombie is within the attack area of the agent, there will also be an attacking function in which the agent will attack the nearest enemy (zombie) continuously. Then the agent will be looking for the next target and identify the enemy. The ultimate goal is to enable the agent kill as many zombies as possible while protecting animals and gain as many points as possible within the time limit.  
@@ -40,16 +40,16 @@ ACTION_DICT = {
   We didn't include the `attack 0` in the action_dict since it makes the actions not fluent. After the agent receives the command `attack 1`, we will send `attack 0` in train function. Hence, agent has to choose `attack 1` to attack an entity per step.
 
 - **Reward Functions**  
-  - $R(s) = +50$, Agent kills a zombie.   
-  - $R(s) = +5$, Agent attacks zombie.
-  - $R(s) = +3$, Agent attacks zombie with a safe distance.
-  - $R(s) = +1$, Agent looks at a zombie.
-  - $R(s) = +1$, Agent approached to an entity.
-  - $R(s) = -500$, Agent becomes dead.
-  - $R(s) = -100$, Agent runs out of time.
-  - $R(s) = -100$, Agent kills an animal. 
-  - $R(s) = -5$, Agent attacked by zombie.
-  - $R(s) = -0.5$, Agent touches the wall.
+  - $ R(s) = +50 $, Agent kills a zombie.   
+  - $ R(s) = +5 $, Agent attacks zombie.
+  - $ R(s) = +3 $, Agent attacks zombie with a safe distance.
+  - $ R(s) = +1 $, Agent looks at a zombie.
+  - $ R(s) = +1 $, Agent approached to an entity.
+  - $ R(s) = -500 $, Agent becomes dead.
+  - $ R(s) = -100 $, Agent runs out of time.
+  - $ R(s) = -100 $, Agent kills an animal. 
+  - $ R(s) = -5 $, Agent attacked by zombie.
+  - $ R(s) = -0.5 $, Agent touches the wall.
   
   In this version, we tried many rewards. When we ran the game, we noticed that the agent would hide in a corner and attack zombies. We thought it could not kill zombies efficiently and safely. Hence, we tried to prevent agent to approach walls. It doesn't work as we want. Hence, we added a negative reward when it touches the walls. We encouraged the agent to keep a smaller distance each time since agent need to keep attacking range to kill zombies efficiently. 
 
@@ -62,25 +62,25 @@ We used DQL and PPO methods to help improve the performance.
 
 1. Deep Q Learning (DQN)
 
-  • Store the past exploring experience of the agent 
+- Store the past exploring experience of the agent 
 
-  • Determine the maximum output of the last action 
+- Determine the maximum output of the last action 
 
-  • Update Q-value table using Bellman Equation 
+- Update Q-value table using Bellman Equation 
 
-    $$Q(S, A) = Q(S, A) + \alpha [R + \gamma max_{a}Q(S', a) - Q(S,A)]$$
+$$ Q(S, A) = Q(S, A) + \alpha [R + \gamma max_{a}Q(S', a) - Q(S,A)] $$
     
-  $S$ = the State or Observation  
+  $ S $ = the State or Observation  
 
-  $A$ = the Action the agent takes 
+  $ A $ = the Action the agent takes  
 
-  $R$ = the Reward from taking an Action 
-  - Advantage:
-  - Disadvantage: It will get higher overfitting because it keeps its strategy after many iterations. It is hard to setup and debug and use properly, and it also needs numerous episodes to train. 
+  $ R $ = the Reward from taking an Action  
+- Advantage:
+- Disadvantage: It will get higher overfitting because it keeps its strategy after many iterations. It is hard to setup and debug and use properly, and it also needs numerous episodes to train. 
 
 
 2. Proximal Policy Optimization (PPO)  
-We tried both discrete action and continuous action list. 
+We tried both discrete action and continuous action list.  
 
 $$ L(\theta)=\hat E_t[\min(r_t(\theta)\hat A_t, clip(r_t(\theta),1-\epsilon, 1+\epsilon)\hat A_t)] $$
   - Advantage: PPO should eventually get better behavior than DQN since DQN will get higher overfit.
