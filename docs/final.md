@@ -61,7 +61,7 @@ Within a specific time limit. Currently, the limit is 50 seconds. If agent kills
 We used DQL and PPO methods to help improve the performance.
 
 #### Deep Q Learning (DQN)
-<img width="600" alt="DQN" src="https://user-images.githubusercontent.com/24601423/102749955-c8615f00-4319-11eb-80ea-aced6f62fc9b.png">
+<img width="600" alt="DQN" src="https://user-images.githubusercontent.com/24601423/102749955-c8615f00-4319-11eb-80ea-aced6f62fc9b.png">  
 
   - Store the past exploring experience of the agent 
   
@@ -82,7 +82,8 @@ We used DQL and PPO methods to help improve the performance.
 
 
 #### Proximal Policy Optimization (PPO)  
-<img width="600" alt="PPO" src="https://user-images.githubusercontent.com/24601423/102749803-80423c80-4319-11eb-802b-7d8f9cd9b517.png">
+<img width="600" alt="PPO" src="https://user-images.githubusercontent.com/24601423/102749803-80423c80-4319-11eb-802b-7d8f9cd9b517.png">  
+
   We tried both discrete action and continuous action list. We do train agent with this algorithm, but it has bug on our code. Agent cannot get reward from XML map. Its behavior doesn't as good as we think because of this problem. We cannot finish the training even we fix this problem. We make this comparison according to articles which introduce this two method. And Since PPO is a more complex and suitable method, agent should get better result with this algorithm. 
 
   $$ L(\theta)=\hat E_t[\min(r_t(\theta)\hat A_t, clip(r_t(\theta),1-\epsilon, 1+\epsilon)\hat A_t)] $$
